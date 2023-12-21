@@ -25,7 +25,11 @@ To get started with the Urban Chaos Model Viewer, you'll need to clone the repos
 - **Exporting Models**: Convert and export models to OBJ format with associated textures for use in other 3D tools such as Blender
 
 ## Screenshots
+![Logo](model-view1.PNG)
 
+![Logo](model-view2.PNG)
+
+![Logo](model-view3.PNG)
 
 ## Acknowledgments
 - **Pieroz:** Special thanks to [Pieroz](https://github.com/Pieroz) for his Python script for conversion and extraction of PRM to OBJ and Urban Chaos work in general. This project is largely just a port of his work into C#.
@@ -38,4 +42,4 @@ To get started with the Urban Chaos Model Viewer, you'll need to clone the repos
 Contributions to the Urban Chaos Model Viewer are welcome. Please feel free to fork the repository, make your changes, and submit a pull request.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
