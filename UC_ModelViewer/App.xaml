@@ -1,0 +1,13 @@
+﻿<Application x:Class="UC_ModelViewer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style x:Key="CustomFont">
+                <Setter Property="TextElement.FontFamily" Value="/Fonts/#impacted 2.0">
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
