@@ -94,6 +94,11 @@ namespace UC_ModelViewer.MVVM.Model
             int page = avUInt + avVInt * TextureNormSquares + texturePage * TextureNormSquares * TextureNormSquares;
             int textureImgNo = page - 64 * 11;
 
+            if (textureImgNo < 0 || textureImgNo > 352 || textureImgNo == 161 || textureImgNo == 140)
+            {
+                textureImgNo = 0;
+            }
+
             if (!textureNumbers.Contains(textureImgNo))
             {
                 textureNumbers.Add(textureImgNo);

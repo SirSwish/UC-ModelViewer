@@ -137,32 +137,72 @@ namespace UC_ModelViewer.MVVM.ViewModel
         }
         public static Nprim DecodeNprim(string prmFile, byte[] data)
         {
-            Nprim nprim = new Nprim
+
+            if (prmFile.StartsWith("prim"))
             {
-                FileName = prmFile,
-                Signature = BitConverter.ToInt16(data, 0),
-                Name = ReadUntilNull(data, 2),
-                FirstPointId = BitConverter.ToInt16(data, 34),
-                LastPointId = BitConverter.ToInt16(data, 36),
-                FirstQuadrangleId = BitConverter.ToInt16(data, 38),
-                LastQuadrangleId = BitConverter.ToInt16(data, 40),
-                FirstTriangleId = BitConverter.ToInt16(data, 42),
-                LastTriangleId = BitConverter.ToInt16(data, 44),
-                CollisionType = PrimMaps.GetCollisionTypeDescription(data[46]),
-                ReactionToImpactByVehicle = data[47],
-                ShadowType = data[48],
-                VariousProperties = data[49],
-            };
+                // Old Prim Logic
+                Nprim nprim = new Nprim
+                {
+                    FileName = prmFile,
+                    Name = Encoding.UTF8.GetString(data, 0, 32).Trim(new char[] { '\0', '\n', '\r', '\t' }),
+                    FirstPointId = BitConverter.ToInt16(data, 32),
+                    LastPointId = BitConverter.ToInt16(data, 34),
+                    FirstQuadrangleId = BitConverter.ToInt16(data, 36),
+                    LastQuadrangleId = BitConverter.ToInt16(data, 38),
+                    FirstTriangleId = BitConverter.ToInt16(data, 40),
+                    LastTriangleId = BitConverter.ToInt16(data, 42),
+                    CollisionType = PrimMaps.GetCollisionTypeDescription(data[44]),
+                    ReactionToImpactByVehicle = data[45],
+                    ShadowType = data[46],
+                    VariousProperties = data[47],
+                };
 
-            nprim.Points = nprim.DecodePoints(data, BitConverter.ToInt16(data, 34), BitConverter.ToInt16(data, 36) - BitConverter.ToInt16(data, 34), nprim.FindCursorPos(nprim, "Points"));
-            nprim.Triangles = nprim.DecodeTriangles(data, BitConverter.ToInt16(data, 42), BitConverter.ToInt16(data, 44) - BitConverter.ToInt16(data, 42), nprim.FindCursorPos(nprim, "Triangles"));
-            nprim.Quadrangles = nprim.DecodeQuadrangles(data, BitConverter.ToInt16(data, 38), BitConverter.ToInt16(data, 40) - BitConverter.ToInt16(data, 38), nprim.FindCursorPos(nprim, "Quadrangles"));
-            nprim.UVQuadCoordinates = new List<List<double>>();
-            nprim.UVTriCoordinates = new List<List<double>>();
-            nprim.ObjContent = "";
-            nprim.MtlContent = ""; //Not needed anymore
+                
+                nprim.Points = nprim.DecodePoints(data, BitConverter.ToInt16(data, 32), BitConverter.ToInt16(data, 34) - BitConverter.ToInt16(data, 32), nprim.FindCursorPos(nprim, "Points"));
+                nprim.Triangles = nprim.DecodeTriangles(data, BitConverter.ToInt16(data, 40), BitConverter.ToInt16(data, 42) - BitConverter.ToInt16(data, 40), nprim.FindCursorPos(nprim, "Triangles"));
+                nprim.Quadrangles = nprim.DecodeQuadrangles(data, BitConverter.ToInt16(data, 36), BitConverter.ToInt16(data, 38) - BitConverter.ToInt16(data, 36), nprim.FindCursorPos(nprim, "Quadrangles"));
+                nprim.UVQuadCoordinates = new List<List<double>>();
+                nprim.UVTriCoordinates = new List<List<double>>();
+                nprim.ObjContent = "";
+                nprim.MtlContent = ""; //Not needed anymore
 
-            return nprim;
+                return nprim;
+
+            }
+            else if (prmFile.StartsWith("nprim"))
+            {
+                // New Prim Logic
+                Nprim nprim = new Nprim
+                {
+                    FileName = prmFile,
+                    Signature = BitConverter.ToInt16(data, 0),
+                    Name = ReadUntilNull(data, 2).Trim(new char[] { '\0', '\n', '\r', '\t' }),
+                    FirstPointId = BitConverter.ToInt16(data, 34),
+                    LastPointId = BitConverter.ToInt16(data, 36),
+                    FirstQuadrangleId = BitConverter.ToInt16(data, 38),
+                    LastQuadrangleId = BitConverter.ToInt16(data, 40),
+                    FirstTriangleId = BitConverter.ToInt16(data, 42),
+                    LastTriangleId = BitConverter.ToInt16(data, 44),
+                    CollisionType = PrimMaps.GetCollisionTypeDescription(data[46]),
+                    ReactionToImpactByVehicle = data[47],
+                    ShadowType = data[48],
+                    VariousProperties = data[49],
+                };
+
+
+                nprim.Points = nprim.DecodePoints(data, BitConverter.ToInt16(data, 34), BitConverter.ToInt16(data, 36) - BitConverter.ToInt16(data, 34), nprim.FindCursorPos(nprim, "Points"));
+                nprim.Triangles = nprim.DecodeTriangles(data, BitConverter.ToInt16(data, 42), BitConverter.ToInt16(data, 44) - BitConverter.ToInt16(data, 42), nprim.FindCursorPos(nprim, "Triangles"));
+                nprim.Quadrangles = nprim.DecodeQuadrangles(data, BitConverter.ToInt16(data, 38), BitConverter.ToInt16(data, 40) - BitConverter.ToInt16(data, 38), nprim.FindCursorPos(nprim, "Quadrangles"));
+                nprim.UVQuadCoordinates = new List<List<double>>();
+                nprim.UVTriCoordinates = new List<List<double>>();
+                nprim.ObjContent = "";
+                nprim.MtlContent = ""; //Not needed anymore
+
+                return nprim;
+            }
+
+            return null;
+           
         }
         private void ViewPrimInfo(Nprim selectedNprim)
         {
@@ -318,7 +358,7 @@ namespace UC_ModelViewer.MVVM.ViewModel
                     PrimDirectory + "/../../clumps/botanicc.txc",
                     PrimDirectory + "/../../clumps/bankbomb1.txc",
                     PrimDirectory + "/../../clumps/bball2.txc",
-                    PrimDirectory + "/../../clumps/creds1.txc",
+                    PrimDirectory + "/../../clumps/factory1.txc",
                     PrimDirectory + "/../../clumps/estate2.txc",
                     PrimDirectory + "/../../clumps/finale1.txc",
                     PrimDirectory + "/../../clumps/jung3.txc",

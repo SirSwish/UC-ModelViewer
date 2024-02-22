@@ -24,6 +24,7 @@ namespace UC_ModelViewer.MVVM.Model
         public int ReactionToImpactByVehicle { get; set; }
         public int ShadowType { get; set; }
         public int VariousProperties { get; set; }
+        public ushort dummy { get; set; }
         public List<Point3D> Points { get; set; }
         public List<Triangle> Triangles { get; set; }
         public List<Quadrangle> Quadrangles { get; set; }
@@ -45,12 +46,17 @@ namespace UC_ModelViewer.MVVM.Model
         public int FindCursorPos(Nprim nprim, string itemType)
         {
             int cursorPos = 50;
+            
+            if (nprim.FileName.StartsWith("prim"))
+                {
+                    cursorPos = 56;
+                }
 
             int bytesForPoints = (nprim.LastPointId - nprim.FirstPointId) * 6;
 
             if (itemType == "Points")
             {
-                // cursorPos remains at the default starting position (50)
+                // cursorPos remains at the default starting position (50 and/or 48)
             }
             else if (itemType == "Triangles")
             {
